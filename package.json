@@ -1,0 +1,25 @@
+{
+  "name": "phonebook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanAlbul/FSOBE.git"
+  },
+  "author": "Daniel Albul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanAlbul/FSOBE/issues"
+  },
+  "homepage": "https://github.com/DanAlbul/FSOBE#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.2"
+  }
+}
