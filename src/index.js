@@ -14,7 +14,7 @@ app.use(express.static('dist'))
 app.use(morgan(customMorganFormat));
 app.use(cors());
 
-const PORT = '3004';
+const PORT = process.env.PORT || 3004;
 const hostname = `http://localhost:${PORT}`;
 
 app.listen(PORT, () => {
