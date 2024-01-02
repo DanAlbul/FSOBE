@@ -9,9 +9,10 @@ morgan.token('data', (req) => {
   return JSON.stringify(req.body);
 });
 
+app.use(express.json());
+app.use(express.static('dist'))
 app.use(morgan(customMorganFormat));
 app.use(cors());
-app.use(express.json());
 
 const PORT = '3004';
 const hostname = `http://localhost:${PORT}`;
