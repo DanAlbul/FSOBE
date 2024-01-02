@@ -1,5 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors'
 
 const app = express();
 
@@ -9,6 +10,7 @@ morgan.token('data', (req) => {
 });
 
 app.use(morgan(customMorganFormat));
+app.use(cors());
 app.use(express.json());
 
 const PORT = '3004';
