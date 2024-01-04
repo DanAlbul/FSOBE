@@ -19,8 +19,17 @@ mongoose.connect(url)
 //-----------------------PERSON---------------------------------
 // define the person schema and create a model
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    minLength: 2,
+  },
+  number: {
+    type: String,
+    required: true,
+    minLength: 6,
+  },
 })
 // change the format of the returned object to remove the _id and __v properties and replace _id with id
 personSchema.set('toJSON', {

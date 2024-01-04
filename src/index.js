@@ -29,6 +29,8 @@ app.listen(PORT, () => {
 
 
 // ~~~ ROUTES ~~~
+
+// ~ Get all persons
 app.get('/api/persons', (req, res, next) => {
 	Person.find({}).then(persons => {
     return res.status(200).json(persons).end()
@@ -74,13 +76,13 @@ app.post('/api/persons', (req, res, next) => {
 	})
 
 	if(Object.values(data).some(v => v === ''))
-		return res.json({error: 'Some content is missing!'}).end()
+		return res.status(400).json({error: 'Some content is missing!'}).end()
 
 	if(!isNaN(data.name))
-		return res.json({error: 'Name must be a string!'}).end()
+		throw res.status(400).json({error: 'Name must be a string!'}).end()
 
 	if(isNaN(data.number))
-		return res.json({error: 'Number must consists of digits!'}).end()
+		return res.status(400).json({error: 'Number must consists of digits!'}).end()
 
 	newNumber.save()
 		.then(p => res.json(p).end())
@@ -96,15 +98,15 @@ app.put('/api/persons/:id', (req, res, next) => {
 	}
 
 	if(Object.values(data).some(v => v === ''))
-		return res.json({error: 'Some content is missing!'}).end()
+		return res.status(400).json({error: 'Some content is missing!'}).end()
 
 	if(!isNaN(data.name))
-		return res.json({error: 'Name must be a string!'}).end()
+		return res.status(400).json({error: 'Name must be a string!'}).end()
 
 	if(isNaN(data.number))
-		return res.json({error: 'Number must consists of digits!'}).end()
+		return res.status(400).json({error: 'Number must consists of digits!'}).end()
 
-	Person.findByIdAndUpdate(req.params.id, newNumber, {new: true})
+	Person.findByIdAndUpdate(req.params.id, newNumber, {new: true, runValidators: true, context: 'query'})
 		.then(person => {
 			if (person === null) return res.status(404).send(`Number by id ${req.params.id} is not found`).end()
 			else return res.json(person).end()
@@ -117,9 +119,12 @@ app.use(unknownEndpoint)
 
 
 const errorHandler = (error, req, res, next) => {
-  console.error(error.message)
+  console.error(error)
   if (error.name === 'CastError')
     return res.status(400).send({ error: 'malformatted id' })
+	else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message, type: error.name })
+  }
   next(error)
 }
 app.use(errorHandler);
