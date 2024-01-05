@@ -24,11 +24,19 @@ const personSchema = new mongoose.Schema({
     required: true,
     unique: true,
     minLength: 2,
+    required: [true, 'Name is required']
   },
   number: {
     type: String,
     required: true,
-    minLength: 6,
+    validate: {
+      validator: function (value) {
+        return /^\d{2,5}-\d{2,10}$/.test(value);
+      },
+      message: "Invalid phone number format. Valid format: 2-5 digits separated by '-' and another 2-10 digits\n380-2345235, 23-25262452, 45664-23456."
+    },
+    minLength: 8,
+    required: [true, 'Phone number is required']
   },
 })
 // change the format of the returned object to remove the _id and __v properties and replace _id with id

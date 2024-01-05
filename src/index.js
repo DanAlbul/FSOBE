@@ -75,15 +75,6 @@ app.post('/api/persons', (req, res, next) => {
 		number: data.number,
 	})
 
-	if(Object.values(data).some(v => v === ''))
-		return res.status(400).json({error: 'Some content is missing!'}).end()
-
-	if(!isNaN(data.name))
-		throw res.status(400).json({error: 'Name must be a string!'}).end()
-
-	if(isNaN(data.number))
-		return res.status(400).json({error: 'Number must consists of digits!'}).end()
-
 	newNumber.save()
 		.then(p => res.json(p).end())
 		.catch(error => next(error))
@@ -96,15 +87,6 @@ app.put('/api/persons/:id', (req, res, next) => {
 		name: data.name,
 		number: data.number,
 	}
-
-	if(Object.values(data).some(v => v === ''))
-		return res.status(400).json({error: 'Some content is missing!'}).end()
-
-	if(!isNaN(data.name))
-		return res.status(400).json({error: 'Name must be a string!'}).end()
-
-	if(isNaN(data.number))
-		return res.status(400).json({error: 'Number must consists of digits!'}).end()
 
 	Person.findByIdAndUpdate(req.params.id, newNumber, {new: true, runValidators: true, context: 'query'})
 		.then(person => {
